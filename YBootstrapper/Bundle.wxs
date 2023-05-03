@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
+	<?define ProductName=yTap?>
+	<?define ProductManufacturer=yTap?>
+	<Bundle Name="yTap"
+			Version="1.0.0.0"
+			Manufacturer="yTap"
+			UpgradeCode="c80236ea-afdb-470e-b160-4236a1bf36b2"
+			IconSourceFile="..\YApp\Resources\Zzz_Icon_Color.ico">
+		<Variable Name="AddDesktopShortcutCheckbox" Type="numeric" Value="0" />
+		<Variable Name="AddDesktopShortcutMsiVariable" bal:Overridable="yes" Value="[AddDesktopShortcutCheckbox]" />
+		<Variable Name="RunAfterSetupCheckbox" Type="numeric" Value="1" />
+		<Variable Name="RunAfterSetupMsiVariable" bal:Overridable="yes" Value="[RunAfterSetupCheckbox]" />
+		<Variable Name="RunOnStartupCheckbox" Type="numeric" Value="1" />
+		<Variable Name="RunOnStartupMsiVariable" bal:Overridable="yes" Value="[RunOnStartupCheckbox]" />
+		<Variable Name="FolderEditbox" Type="string" Value="[ProgramFilesFolder]" />
+		<Variable Name="InstallLocationMsiVariable" bal:Overridable="yes" Value="[FolderEditbox]" />
+		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.HyperlinkLicense">
+			<bal:WixStandardBootstrapperApplication
+			  LogoFile="..\YApp\Resources\Zzz_Icon_Color_64x64.png"
+			  LicenseUrl="https://youtu.be/dQw4w9WgXcQ"
+			  ThemeFile="Resources\YTheme.xml"
+			  LocalizationFile="Resources\YTheme.wxl" />
+		</BootstrapperApplicationRef>
+
+		<Chain>
+			<MsiPackage Id="Setup" SourceFile="..\YSetup\bin\$(var.Configuration)\yTap_Setup.msi" Compressed="yes">
+				<MsiProperty Name="AddDesktopShortcut" Value="[AddDesktopShortcutMsiVariable]" />
+				<MsiProperty Name="RunAfterSetup" Value="[RunAfterSetupMsiVariable]" />
+				<MsiProperty Name="RunOnStartup" Value="[RunOnStartupMsiVariable]" />
+				<MsiProperty Name="InstallLocation" Value="[InstallLocationMsiVariable]" />
+			</MsiPackage>
+		</Chain>
+	</Bundle>
+</Wix>

@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>True</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon>Resources\Zzz_Icon_Color.ico</ApplicationIcon>
+    <PackageIcon>Zzz_Icon_Color_64x64.png</PackageIcon>
+    <AssemblyName>yTap</AssemblyName>
+	<SelfContained>true</SelfContained>
+	<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+	<PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Glossary.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Zzz_Icon_Color.ico" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AppConfig.json" />
+    <EmbeddedResource Include="Resources\Glossary.json" />
+    <EmbeddedResource Include="Resources\Zzz_Icon_Color.ico" />
+    <EmbeddedResource Include="Resources\Zzz_Icon_Color_64x64.png" />
+    <EmbeddedResource Include="Resources\Zzz_Icon_White.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="System.Management" Version="7.0.0" />
+    <PackageReference Include="TaskScheduler" Version="2.10.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\Zzz_Icon_Color_64x64.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<?define ProductTargetDir=$(var.YApp.TargetDir)?>
+	<?define ProductName=yTap?>
+	<?define ProductManufacturer=yTap?>
+	<?define ProductSlogan=go sleep?>
+
+	<Product Id="732C5308-2291-4D1F-B590-0D507195D33C" Name="$(var.ProductName)_Setup" Language="1033" Version="1.0.0.0" Manufacturer="$(var.ProductManufacturer)" UpgradeCode="ea652548-fae2-472d-a6dc-099b9117bd9c">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
+			<ComponentRef Id="ShortcutStartmenu" />
+			<ComponentRef Id="ShortcutDesktop" />
+			<ComponentRef Id="RunOnStartup" />
+			<ComponentRef Id="DontRunOnStartup" />
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+
+		<CustomAction Id="LaunchApp" Directory="INSTALLFOLDER" Return="asyncNoWait" ExeCommand="[INSTALLFOLDER]$(var.ProductName).exe start" />
+
+		<InstallExecuteSequence>
+			<Custom Action="LaunchApp" After="InstallFinalize">RUNAFTERSETUP=1</Custom>
+		</InstallExecuteSequence>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="INSTALLLOCATION">
+				<Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
+			</Directory>
+
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="APPPROGRAMSFOLDER" Name="$(var.ProductName)" />
+			</Directory>
+
+			<Directory Id="DesktopFolder" Name="Desktop" />
+		</Directory>
+
+		<DirectoryRef Id="APPPROGRAMSFOLDER">
+			<Component Id="ShortcutStartmenu" Guid="52C83FE6-373D-4001-8541-DB0B5EC1558D">
+				<RemoveFolder Id="REMOVEAPPPROGRAMSFOLDER" Directory="APPPROGRAMSFOLDER" On="uninstall" />
+				<Shortcut Id="APPSTARTMENUSHORTCUT" Name="$(var.ProductName)" Description="$(var.ProductSlogan)" Target="[INSTALLFOLDER]$(var.ProductName).exe" WorkingDirectory="INSTALLFOLDER" />
+				<RegistryValue Root="HKCU" Key="Software\$(var.ProductName)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
+		<DirectoryRef Id="DesktopFolder">
+			<Component Id="ShortcutDesktop" Guid="1CFBD89A-FF3E-4EA0-BC9D-9B155EE2C3CD">
+				<RemoveFolder Id="REMOVEDESKTOPFOLDER" Directory="DesktopFolder" On="uninstall" />
+				<Shortcut Id="APPDESKTOPSHORTCUT" Name="$(var.ProductName)" Description="$(var.ProductSlogan)" Target="[INSTALLFOLDER]$(var.ProductName).exe" WorkingDirectory="INSTALLFOLDER" />
+				<RegistryValue Root="HKCU" Key="Software\$(var.ProductName)" Name="installed" Type="integer" Value="1" />
+				<Condition>ADDDESKTOPSHORTCUT=1</Condition>
+			</Component>
+			<Component Id="RunOnStartup" Guid="23B3ECEC-D80F-4AB8-A268-783C0482D479" Permanent="yes">
+				<RegistryValue Root="HKCU" Key="Software\$(var.ProductManufacturer)\$(var.ProductName)" Name="IsRunOnStartup" Type="string" Value="True" />
+				<Condition>RUNONSTARTUP=1</Condition>
+			</Component>
+			<Component Id="DontRunOnStartup" Guid="2E315F3D-1826-4F2D-A527-8A9B7119AC4F">
+				<RegistryValue Root="HKCU" Key="Software\$(var.ProductManufacturer)\$(var.ProductName)" Name="IsRunOnStartup" Type="string" Value="False" />
+				<Condition>RUNONSTARTUP=0</Condition>
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="$(var.ProductName).exe" Guid="906ae6f7-b359-44c0-847b-2c25514cc086">
+				<File Id="$(var.ProductName).exe" Name="$(var.ProductName).exe" Source="$(var.ProductTargetDir)publish\$(var.ProductName).exe" />
+			</Component>
+			<Component Id="D3DCompiler_47_cor3.dll" Guid="aaa2ed2d-aa21-45fb-9523-15ccfd81639d">
+				<File Id="D3DCompiler_47_cor3.dll" Name="D3DCompiler_47_cor3.dll" Source="$(var.ProductTargetDir)publish\D3DCompiler_47_cor3.dll" />
+			</Component>
+			<Component Id="PenImc_cor3.dll" Guid="b7bef97f-5345-4e42-b308-1895160ae76b">
+				<File Id="PenImc_cor3.dll" Name="PenImc_cor3.dll" Source="$(var.ProductTargetDir)publish\PenImc_cor3.dll" />
+			</Component>
+			<Component Id="PresentationNative_cor3.dll" Guid="d28bc2b4-af30-448b-80c0-6e9605648aff">
+				<File Id="PresentationNative_cor3.dll" Name="PresentationNative_cor3.dll" Source="$(var.ProductTargetDir)publish\PresentationNative_cor3.dll" />
+			</Component>
+			<Component Id="vcruntime140_cor3.dll" Guid="136aca8c-4551-4efe-ba1a-0795851713b3">
+				<File Id="vcruntime140_cor3.dll" Name="vcruntime140_cor3.dll" Source="$(var.ProductTargetDir)publish\vcruntime140_cor3.dll" />
+			</Component>
+			<Component Id="wpfgfx_cor3.dll" Guid="4707746a-e81f-4ec9-bed6-4fd134d85ccd">
+				<File Id="wpfgfx_cor3.dll" Name="wpfgfx_cor3.dll" Source="$(var.ProductTargetDir)publish\wpfgfx_cor3.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
